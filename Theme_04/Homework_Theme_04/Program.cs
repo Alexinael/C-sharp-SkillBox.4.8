@@ -11,9 +11,9 @@ namespace Homework_Theme_04
         static byte colIncome = 0; // Доход
         static byte colRate = 1; // Расход
         static byte colDetla = 2; // Колонка дельта (высчитываем)
+        static public int def = 3;
 
-
-        static public int[][] compare(int[] arrayIncoming, int[] arrayTax)
+        static public int[][] join(int[] arrayIncoming, int[] arrayTax)
         {
             int[][] ret = new int[12][];
 
@@ -121,6 +121,22 @@ namespace Homework_Theme_04
             }
         }
 
+        static public int[,] fillIntArray(int col1, int row1)
+        {
+            Random rand = new Random();
+            int[,] matrix = new int[col1, row1];
+            for (int i = 0; i < col1; i++)
+            {
+                for (int j = 0; j < row1; j++)
+                {
+                    matrix[i, j] = rand.Next(1, 10);
+                    Console.Write(matrix[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            return matrix;
+        }
+
         static void Main(string[] args)
         {
             // Задание 1.
@@ -155,7 +171,7 @@ namespace Homework_Theme_04
             // Месяцев с положительной прибылью: 10
 
             var demo = demoFinanceStatics();
-            // compare(arr1, arr2); Вызываем для объединения двух массивов, если нужно организовать ввод по отдельности массива прибыли и отдельно расходов
+            // join(arr1, arr2); Вызываем для объединения двух массивов, если нужно организовать ввод по отдельности массива прибыли и отдельно расходов
             showStatics(demo);
             showFinanceStatics(demo);
 
@@ -186,8 +202,11 @@ namespace Homework_Theme_04
             // Справка: https://ru.wikipedia.org/wiki/Треугольник_Паскаля
             showMessage("Задача 2");
             Console.WriteLine("Введи число N");
-            int n = 0;
-            int.TryParse(Console.ReadLine(), out n);
+            int n = def;
+            if (!int.TryParse(Console.ReadLine(), out n))
+            {
+                n = def;
+            }
             int[][] outArray = new int[n][];
             outArray[0] = new int[] { 1 };
             for (int i = 1; i < n; i ++)
@@ -205,16 +224,8 @@ namespace Homework_Theme_04
                     }
                 }
             }
-            for (int i = 0; i < outArray.Length; i++)
-            {
-                for (int j = 0; j < outArray[i].Length; j++)
-                {
-                    Console.Write("{0,-3} ", outArray[i][j]);
-                }
-                Console.WriteLine();
-            }
-
-            Console.ReadKey();
+            showArray(outArray);
+            //Console.ReadKey();
             // 
             // * Задание 3.1
             // Заказчику требуется приложение позволяющщее умножать математическую матрицу на число
@@ -232,8 +243,27 @@ namespace Homework_Theme_04
             //      |  5  3  1  |   | 25  15   5  |
             //
             //
-
-
+            showMessage("Задание 3.1");
+            int col1 = def;
+            int row1 = def;
+            Console.WriteLine($"Введи количество колонок , по умолчанию {col1}:");
+            if (!int.TryParse(Console.ReadLine(), out col1)) { col1 = def;  }
+            Console.WriteLine($"Введи количество строк , по умолчанию {row1}:");
+            if (!int.TryParse(Console.ReadLine(), out row1)) { row1 = def;  }
+            Random rand = new Random();
+            int[,] matrix = fillIntArray(col1, row1);
+            int multi1 = 0;
+            Console.WriteLine($"Введи число которое надо умножить: ");
+            int.TryParse(Console.ReadLine(), out multi1);
+            for (int i = 0; i < col1; i++)
+            {
+                for (int j = 0; j < row1; j++)
+                {
+                    Console.Write((matrix[i, j]* multi1) + " ");
+                }
+                Console.WriteLine();
+            }
+            //Console.ReadKey();
             // ** Задание 3.2
             // Заказчику требуется приложение позволяющщее складывать и вычитать математические матрицы
             // Справка https://ru.wikipedia.org/wiki/Матрица_(математика)
@@ -247,11 +277,38 @@ namespace Homework_Theme_04
             //  |  4  5  7  | + |  2  5  6  | = |  6  10  13  |
             //  |  5  3  1  |   |  3  6  7  |   |  8   9   8  |
             //  
-            //  
+
+            showMessage("Задание 3.2");
+            Console.WriteLine("Второй массив");
+            int[,] matrix2 = fillIntArray(col1, row1);
+
+            showMessage("Сложение");
+            for (int i = 0; i < col1; i++)
+            {
+                for (int j = 0; j < row1; j++)
+                {
+                    Console.Write((matrix2[i, j]+ matrix[i,j])+ " ");
+                }
+                Console.WriteLine();
+            }
+
+            showMessage("вычитание");
+            for (int i = 0; i < col1; i++)
+            {
+                for (int j = 0; j < row1; j++)
+                {
+                    Console.Write((matrix2[i, j] - matrix[i, j]) + " ");
+                }
+                Console.WriteLine();
+            }
+            //Console.ReadKey();
             //  |  1  3  5  |   |  1  3  4  |   |  0   0   1  |
             //  |  4  5  7  | - |  2  5  6  | = |  2   0   1  |
             //  |  5  3  1  |   |  3  6  7  |   |  2  -3  -6  |
             //
+
+
+
             // *** Задание 3.3
             // Заказчику требуется приложение позволяющщее перемножать математические матрицы
             // Справка https://ru.wikipedia.org/wiki/Матрица_(математика)
@@ -269,6 +326,92 @@ namespace Homework_Theme_04
             //  |  1  2  3  | х | 5 | = | 32 |
             //                  | 6 |  
             //
+
+
+            showMessage("Умножение");
+            
+            Console.WriteLine($"1 матрица Введите количество колонок , по умолчанию {def}");
+            if (!int.TryParse(Console.ReadLine(), out col1))
+            {
+                col1 = def;
+            }
+            Console.WriteLine($"1 матрица Введите количество строк , по умолчанию {def}");
+            if (!int.TryParse(Console.ReadLine(), out row1))
+            {
+                row1 = def;
+            }
+            int col2 = col1;
+            int row2 = row1;
+            Console.WriteLine($"1 матрица Введите количество колонок , по умолчанию {def}");
+            if (!int.TryParse(Console.ReadLine(), out col2)) { col2 = def;  }
+            Console.WriteLine($"2 матрица Введите количество строк , по умолчанию {def}");
+            if (!int.TryParse(Console.ReadLine(), out row2)) { row2 = def;  }
+
+            int[,] matrix33_1   = fillIntArray(col1, row1);
+            int[,] matrix33_2   = fillIntArray(col2, row2);
+            
+
+            if (row1 != col2)
+            {
+                Console.WriteLine("Перемножение возможно с одинаковым числом строк/колонок");
+            }
+            else
+            {
+                showArray2(matrix33_1,"Задание 3.3 1 массив");
+                showArray2(matrix33_2, "Задание 3.3 2 массив");
+
+                int[,] outMAtrix = new int[row1,row1];
+                for (int i = 0; i < col1; i ++)
+                {
+                    outMAtrix[i, 0] = 0;
+                    for (int j = 0; j < row1; j++)
+                    {
+                        outMAtrix[i, j] += matrix33_1[i, j] * matrix33_2[j, i];
+                    }
+                }
+                Console.WriteLine("Result");
+                showArray2(outMAtrix);
+            }
+            
+            
+            
+            Console.ReadKey();
+        }
+
+        private static void showArray2(int[,] outArray, string msg = "")
+        {
+            Console.WriteLine();
+            if (msg != "")
+            {
+                Console.WriteLine(msg);
+            }
+            for (int i = 0; i < outArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < outArray.GetLength(1); j++)
+                {
+                    Console.Write("{0,-3} ", outArray[i,j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+        private static void showArray(int[][] outArray, string msg = "")
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            if (msg != "")
+            {
+                Console.WriteLine(msg);
+            }
+            for (int i = 0; i < outArray.Length; i++)
+            {
+                for (int j = 0; j < outArray[i].Length; j++)
+                {
+                    Console.Write("{0,-3} ", outArray[i][j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
         }
     }
 }
